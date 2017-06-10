@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-4.2.xsd
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd">
+	
+	<!-- mvc注解驱动 -->
+    <mvc:annotation-driven/>
+    
+    <!-- 配置自定义类型转换器 -->
+	<!-- <bean id="conversionService" 
+		  class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.jiyun.util.DateConverter"></bean>
+			</list>
+		</property>
+	</bean> -->
+    
+    <!-- 静态资源 解析 -->
+	<mvc:resources location="/js/" mapping="/js/**" />
+	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/images/" mapping="/images/**" />
+	<mvc:resources location="/lib/" mapping="/lib/**" />
+    
+	<!-- 扫描controller包下所有标注@Controller的组件 -->
+	<context:component-scan base-package="com.jiyun.controller"/>
+	
+	<!-- 视图解析器 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+    p:prefix="/WEB-INF/views/" p:suffix=".jsp" />
+    
+    
+    <!-- 配置 MultipartResolver  处理文件上传 -->
+  	<bean id="multipartResolver" 
+  	class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+  		<property name="defaultEncoding" value="UTF-8"/> <!-- 默认编码 (ISO-8859-1) -->
+  		<property name="maxInMemorySize" value="10240"/> <!-- 最大内存大小 (10240)--> 
+  		<property name="uploadTempDir" value="/upload/"/> <!-- 上传后的目录名 (WebUtils#TEMP_DIR_CONTEXT_ATTRIBUTE) --> 
+  		<property name="maxUploadSize" value="-1"/> <!-- 最大文件大小，单位是字节，-1为无限制 --> 
+  	</bean>
+    
+</beans>
